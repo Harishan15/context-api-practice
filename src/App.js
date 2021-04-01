@@ -1,13 +1,18 @@
 // import './App.css';
-import React, { useState } from "React";
+import React, { useState } from "react";
 
 function App() {
 	const [input, setInput] = useState("");
 	const [messages, setMessages] = useState([]);
 
+	const handleChange = () => {
+		console.log("Hello : ", this);
+	};
+
 	return (
 		<div className="App">
-			<input type="type" onChange />
+			<h2>Type any messages</h2>
+			<input type="type" onChange={handleChange.bind(this)} />
 			<ul>
 				<li>{}</li>
 			</ul>
