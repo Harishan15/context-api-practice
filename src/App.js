@@ -1,29 +1,37 @@
-// import './App.css';
-import React, { useState, useCallback } from "react";
+import React, { useState } from "react";
 
 function App() {
 	const [input, setInput] = useState("");
 	const [messages, setMessages] = useState([]);
 
-	const submitMessage = () => {
-		messages.push(input);
+	const handleChange = (e) => {
+		setInput(e.target.value);
+		setMessages(messages);
 	};
 
-	const handleChange = useCallback((event) => {
-		const { value } = event.target;
-		setInput({ ...input, value });
-	});
+	const submitMessage = () => {
+		setMessages([...messages, input]);
+		setInput("");
+	};
 
 	return (
-		<div className="App">
-			<h2>Type any messages</h2>
-			<input type="type" onChange={handleChange} />
-			<ul>
-				<li>{}</li>
-			</ul>
-			<button type="Submit" onChange={submitMessage}>
+		<div>
+			<h3>Type in a new Message:</h3>
+			<input
+				type="text"
+				onChange={handleChange}
+				value={input}
+				placeholder="Your message"
+			/>
+			<button type="submit" onClick={submitMessage}>
 				Submit
 			</button>
+
+			<ul>
+				{messages.map((x, i) => {
+					return <li key={i}>{x}</li>;
+				})}
+			</ul>
 		</div>
 	);
 }
