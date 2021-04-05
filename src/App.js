@@ -1,54 +1,32 @@
-import React, { useState, createContext } from "react";
+import React, { useState, useReducer } from "react";
 
 const ADD = "ADD";
-const addMessageAction = (message) => {
+
+const addMessage = (message) => {
 	return {
 		type: ADD,
-		message,
+		message: message,
 	};
 };
 
-const messageReducer = (state = [], action) => {
-	// Use switch statement to lay out the reducer logic in response to different action type
+function messageReducer(state, action) {
 	switch (action.type) {
 		case ADD:
 			return [...state, action.message];
 		default:
 			return state;
 	}
-};
-
-const MessageContext = createContext(messageReducer); //creating the context
-
-//context api ends here
-
-const mapStateToProps = (state) => {
-	return { messages: state };
-};
-
-const mapDispatchToProps = (dispatch) => {
-	return {
-		submitNewMessage: (message) => {
-			dispatch(addMessageAction(message));
-		},
-	};
-};
-
-function App() {
-	return (
-		<MessageContext.Provider value={(mapStateToProps(), mapDispatchToProps())}>
-			<DisplayMessage />
-		</MessageContext.Provider>
-	);
 }
 
-const DisplayMessage = () => {
-	const [input, setInput] = useState("");
-	const [messages, setMessages] = useState([]);
+const App = () => {
+	const [input, setInput] = useState(""); //local state
+	const [messages, setMessages] = useState([]); //local state
+
+	const initialState = "";
 
 	const handleChange = (e) => {
 		setInput(e.target.value);
-		setMessages(messages);
+		setMessages(messages); //no need this in context (comment it)
 	};
 
 	const submitMessage = () => {
@@ -56,8 +34,11 @@ const DisplayMessage = () => {
 		setInput("");
 	};
 
+	const [state, dispatch] = useReducer(messageReducer, initialState);
+
 	return (
 		<div>
+			<h1>Context Api Practices</h1>
 			<h3>Type in a new Message:</h3>
 			<input
 				type="text"
